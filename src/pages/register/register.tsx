@@ -19,16 +19,16 @@ import { AxiosError } from 'axios';
 export interface IError{
     message: string;
 }
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Register() {
     const [errorMessage, setErrorMessage] = useState('');
-    const {mutate: registerUser} = useMutation({mutationFn: (user: RegisterUser) => postUser(user), onError: (error: AxiosError<IError>) => {
-        console.log(error);
-        const data = error.response?.data ;
-        setErrorMessage(data?.message??'');
-    }
+    const {mutate: registerUser} = useMutation({mutationFn: (user: RegisterUser) => postUser(user), 
+        onError: (error: AxiosError<IError>) => {
+            console.log(error);
+            const data = error.response?.data ;
+            setErrorMessage(data?.message??'');
+        }
     });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -126,7 +126,7 @@ export default function Register() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
