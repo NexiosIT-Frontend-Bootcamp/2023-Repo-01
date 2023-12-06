@@ -13,12 +13,23 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { postUser } from '../../api/userService';
 import { useMutation } from '@tanstack/react-query';
 import { RegisterUser } from '../../types/registerUser';
+import { useState } from 'react';
+import { AxiosError } from 'axios';
 
+export interface IError{
+    message: string;
+}
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Register() {
-    const {mutate: registerUser} = useMutation({mutationFn: (user: RegisterUser) => postUser(user)});
+    const [errorMessage, setErrorMessage] = useState('');
+    const {mutate: registerUser} = useMutation({mutationFn: (user: RegisterUser) => postUser(user), onError: (error: AxiosError<IError>) => {
+        console.log(error);
+        const data = error.response?.data ;
+        setErrorMessage(data?.message??'');
+    }
+    });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,21 +37,16 @@ export default function Register() {
     const email = data.get('email')?.toString();
     const username = data.get('username')?.toString();
     const password = data.get('password')?.toString();
-
-    console.log({
-        username: data.get('username'),
-        email: data.get('email'),
-        password: data.get('password'),
-        confirmPassword: data.get('confirmPassword')
-      });
-    
-    if (email === undefined || username === undefined || password === undefined) {
+    const confirmPassword = data.get('password')?.toString();
+    if (email === undefined || username === undefined || password === undefined || email === '' || username === '' || password === '' || confirmPassword === '') {
+        setErrorMessage("All fields are required to fill in")
         return
     }
-    if (data.get('password') === data.get('confirmPassword')) {
-        registerUser({username, email, password});
+    if (password !== confirmPassword) {
+        setErrorMessage("Passwords are not the same!")
+        return
     }
-    
+    registerUser({username, email, password});
   };
 
   return (
@@ -61,6 +67,9 @@ export default function Register() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+          <span style={{color: 'red'}}>
+            {errorMessage}
+          </span>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
