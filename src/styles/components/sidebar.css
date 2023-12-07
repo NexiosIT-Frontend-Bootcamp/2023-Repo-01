@@ -1,0 +1,59 @@
+/* Sidebar.css */
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: rgb(0, 103, 163);
+    color: white;
+    padding: 20px;
+  }
+  
+  .sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid grey;
+  }
+  
+  .user-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-icon {
+    width: 40px;
+    height: 40px;
+    background-color: #555;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .username {
+    font-size: 18px;
+  }
+  
+  .settings-button {
+    background-color: dimgrey;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 2px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .chats-list {
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    li {
+      margin-bottom: 10px;
+    }
+  }
+  
